@@ -53,32 +53,47 @@ const UserSearch: React.FC<UserSearchProps> = ({ users }) => {
   };
 
   const handleInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace" && inputValue === "") {
-      setSelectedItemIndex(null);
-      const lastChip = chips[chips.length - 1];
-      if (toBeRemoved === lastChip) {
-        if (lastChip) {
-          handleChipRemove(lastChip);
-          setToBeRemoved(null);
+    switch (e.key) {
+      case "Backspace":
+        if (inputValue === "") {
+          setSelectedItemIndex(null);
+          const lastChip = chips[chips.length - 1];
+          if (toBeRemoved === lastChip) {
+            if (lastChip) {
+              handleChipRemove(lastChip);
+              setToBeRemoved(null);
+            }
+          } else {
+            setToBeRemoved(lastChip);
+          }
         }
-      } else {
-        setToBeRemoved(lastChip);
-      }
-    } else if (e.key === "ArrowDown") {
-      setSelectedItemIndex((prevIndex) =>
-        prevIndex === null
-          ? 0
-          : Math.min(prevIndex + 1, filteredUsers.length - 1)
-      );
-    } else if (e.key === "ArrowUp") {
-      setSelectedItemIndex((prevIndex) =>
-        prevIndex === null
-          ? filteredUsers.length - 1
-          : Math.max(prevIndex - 1, 0)
-      );
-    } else if (e.key === "Enter" && selectedItemIndex !== null) {
-      handleUserClick(filteredUsers[selectedItemIndex]);
-      setSelectedItemIndex(null);
+        break;
+
+      case "ArrowDown":
+        setSelectedItemIndex((prevIndex) =>
+          prevIndex === null
+            ? 0
+            : Math.min(prevIndex + 1, filteredUsers.length - 1)
+        );
+        break;
+
+      case "ArrowUp":
+        setSelectedItemIndex((prevIndex) =>
+          prevIndex === null
+            ? filteredUsers.length - 1
+            : Math.max(prevIndex - 1, 0)
+        );
+        break;
+
+      case "Enter":
+        if (selectedItemIndex !== null) {
+          handleUserClick(filteredUsers[selectedItemIndex]);
+          setSelectedItemIndex(null);
+        }
+        break;
+
+      default:
+        break;
     }
   };
 
@@ -95,6 +110,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ users }) => {
         <div className="relative">
           <input
             ref={inputRef}
+            autoFocus
             type="text"
             value={inputValue}
             onFocus={() => setShowDropdown(true)}

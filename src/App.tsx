@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { User } from "./interface/user.interface";
 import { networkService } from "./services";
-import AutoCompleteChips from "./user/user-search";
+import UserSearch from "./user/user-search";
 
 function App() {
   const {
@@ -21,7 +21,7 @@ function App() {
       <p className="text-blue-600 text-2xl text-center my-4 font-serif font-semibold">
         Pick Users
       </p>
-      <AutoCompleteChips users={Users} />
+      <UserSearch users={Users} />
     </div>
   );
 }
